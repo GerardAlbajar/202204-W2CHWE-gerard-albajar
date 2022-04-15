@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "style": "sass styles/styles.scss styles/style.css --watch"
+    "style": "sass styles/styles.scss styles/style.css --watch",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +18,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
     "jest": "^27.5.1",
-    "sass": "^1.50.0"
+    "sass": "^1.50.0",
+    "husky": "^7.0.0"
   }
 }
