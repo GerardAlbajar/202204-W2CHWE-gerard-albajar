@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "style": "sass styles/style.scss styles/style.css --watch",
+    "style": "sass styles/sass/style.scss styles/css/style.css --watch",
     "prepare": "husky install"
   },
   "keywords": [],
