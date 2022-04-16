@@ -1,5 +1,5 @@
-const height = 3;
-const width = 3;
+const colum = 3;
+const row = 3;
 class Square {
   positionX;
   positionY;
@@ -9,18 +9,19 @@ class Square {
   constructor(positionX, positionY) {
     this.positionX = positionX;
     this.positionY = positionY;
-    this.id = `#${positionX}P${positionY}`;
   }
 }
 
-const bothPositions = [];
+const squareInformation = [];
 const generatePositionInformation = () => {
-  for (let y = 0; y <= height; y++) {
-    for (let x = 0; x <= width; x++) {
-      bothPositions.push(new Square(x, y));
+  for (let y = 0; y < colum; y++) {
+    for (let x = 0; x < row; x++) {
+      if (y < 10) squareInformation.push(new Square(x, y));
     }
   }
-  return bothPositions;
+  for (let i = 0; i < squareInformation.length; i++) {
+    squareInformation[i].id = i + 1;
+  }
 };
 
 generatePositionInformation();
