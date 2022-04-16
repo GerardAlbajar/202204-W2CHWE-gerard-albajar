@@ -1,71 +1,88 @@
-const colum = 3;
+const column = 3;
 const row = 3;
-const squareInformation = [];
+const grid = [];
 const iAmNotDead = [];
 const iamNotAlive = [];
 
-class Square {
-  positionX;
-  positionY;
-  alive = true;
-  id;
-
-  constructor(positionX, positionY) {
-    this.positionX = positionX;
-    this.positionY = positionY;
-  }
-}
-
 const generatePositionInformation = () => {
-  for (let y = 0; y < colum; y++) {
+  for (let y = 0; y < column; y++) {
     for (let x = 0; x < row; x++) {
-      squareInformation.push(new Square(x, y));
+      grid.push({
+        x,
+        y,
+        alive: false,
+      });
     }
   }
-  for (let i = 0; i < squareInformation.length; i++) {
-    squareInformation[i].id = i + 1;
-  }
-  return squareInformation;
+  return grid;
 };
 
 generatePositionInformation();
 
-// const iAmAlive = () => {
-//   for (let i = 0; i < iAmNotDead.length; i++) {
-//     if (iAmNotDead[i]) {
-//     }
-//   }
-// };
-
-// const iAmDead = () => {
-//   for (let i = 0; i < iamNotAlive.length; i++) {
-//     if (iamNotAlive[i]) {
-//     }
-//   }
-// };
-
 const checkingStatus = () => {
-  for (let i = 0; i < squareInformation.length; i++) {
-    if (squareInformation[i].alive === true) {
-      iAmNotDead.push(squareInformation[i].id);
+  for (let i = 0; i < grid.length; i++) {
+    if (grid[i].alive === true) {
+      iAmNotDead.push(grid[i]);
     }
-    iamNotAlive.push(squareInformation[i].id);
+    iamNotAlive.push(grid[i]);
   }
 };
 
 checkingStatus();
 
 const checkingNeighbours = () => {
-  for (let i = 0; i < squareInformation.length; i++) {
-    squareInformation[i].upperId = i + colum;
-    squareInformation[i].underId = i - colum;
-    squareInformation[i].rightId = i + 1;
-    squareInformation[i].leftId = i - 1;
-    squareInformation[i].upRightCornerId = i + colum + 1;
-    squareInformation[i].upLeftCornerId = i + colum - 1;
-    squareInformation[i].underRightCornerId = i - colum + 1;
-    squareInformation[i].underLeftCornerId = i - colum - 1;
+  for (let i = 0; i < grid.length; i++) {
+    grid[i].idx = i;
+    grid[i].topIdx = i + column;
+    grid[i].bottomIdx = i - column;
+    grid[i].rightIdx = i + 1;
+    grid[i].leftIdx = i - 1;
+    grid[i].topRightIdx = i + column + 1;
+    grid[i].topLeftIdx = i + column - 1;
+    grid[i].bottomRightIdx = i - column + 1;
+    grid[i].bottomLeftIdx = i - column - 1;
   }
 };
 
 checkingNeighbours();
+
+const checkIsAlive = (cell) => {
+  let neighboursAliveCount = 0;
+  if (grid[cell.topLeftIdx].alive) {
+    neighboursAliveCount++;
+  }
+  if (grid[cell.topIdx].alive) {
+    neighboursAliveCount++;
+  }
+  if (grid[cell.topRightIdx].alive) {
+    neighboursAliveCount++;
+  }
+  if (grid[cell.leftIdx].alive) {
+    neighboursAliveCount++;
+  }
+  if (grid[cell.rightIdx].alive) {
+    neighboursAliveCount++;
+  }
+  if (grid[cell.bottomLeftIdx].alive) {
+    neighboursAliveCount++;
+  }
+  if (grid[cell.bottomIdx].alive) {
+    neighboursAliveCount++;
+  }
+  if (grid[cell.bottomRightIdx].alive) {
+    neighboursAliveCount++;
+  }
+
+  if (neighboursAliveCount > 2) {
+    return true;
+  }
+  return false;
+};
+
+const updateAlive = () => {
+  for (let i = 0; i < grid.length; i++) {
+    grid[i].alive = checkIsAlive(grid[i]);
+  }
+};
+
+updateAlive();
