@@ -17,6 +17,20 @@ body {
       height: 20px;
       background-color: lightgray;
       border: 1px solid;
+      &.selected {
+        background-color: aqua;
+      }
     }
+  }
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  .button {
+    padding: 30px;
+    margin: 0 30px;
   }
 }
