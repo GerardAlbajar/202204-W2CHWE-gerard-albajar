@@ -5,17 +5,11 @@ const grid = [];
 const generateGrid = () => {
   for (let y = 0; y < columns; y++) {
     for (let x = 0; x < rows; x++) {
-      grid.push({
-        x,
-        y,
-        alive: false,
-      });
+      grid.push({ alive: false });
     }
   }
   return grid;
 };
-
-generateGrid();
 
 const checkingNeighbours = () => {
   for (let i = 0; i < grid.length; i++) {
@@ -31,54 +25,73 @@ const checkingNeighbours = () => {
   }
 };
 
-checkingNeighbours();
-
-const checkIsAlive = (cell) => {
+const checkIsAlive = (oldGrid, cell) => {
   let neighboursAliveCount = 0;
-  if (grid[cell.topLeftIdx] && grid[cell.topLeftIdx].alive) {
+  if (oldGrid[cell.topLeftIdx] && oldGrid[cell.topLeftIdx].alive) {
     neighboursAliveCount++;
   }
-  if (grid[cell.topIdx] && grid[cell.topIdx].alive) {
+  if (oldGrid[cell.topIdx] && oldGrid[cell.topIdx].alive) {
     neighboursAliveCount++;
   }
-  if (grid[cell.topRightIdx] && grid[cell.topRightIdx].alive) {
+  if (oldGrid[cell.topRightIdx] && oldGrid[cell.topRightIdx].alive) {
     neighboursAliveCount++;
   }
-  if (grid[cell.leftIdx] && grid[cell.leftIdx].alive) {
+  if (oldGrid[cell.leftIdx] && oldGrid[cell.leftIdx].alive) {
     neighboursAliveCount++;
   }
-  if (grid[cell.rightIdx] && grid[cell.rightIdx].alive) {
+  if (oldGrid[cell.rightIdx] && oldGrid[cell.rightIdx].alive) {
     neighboursAliveCount++;
   }
-  if (grid[cell.bottomLeftIdx] && grid[cell.bottomLeftIdx].alive) {
+  if (oldGrid[cell.bottomLeftIdx] && oldGrid[cell.bottomLeftIdx].alive) {
     neighboursAliveCount++;
   }
-  if (grid[cell.bottomIdx] && grid[cell.bottomIdx].alive) {
+  if (oldGrid[cell.bottomIdx] && oldGrid[cell.bottomIdx].alive) {
     neighboursAliveCount++;
   }
-  if (grid[cell.bottomRightIdx] && grid[cell.bottomRightIdx].alive) {
+  if (oldGrid[cell.bottomRightIdx] && oldGrid[cell.bottomRightIdx].alive) {
     neighboursAliveCount++;
   }
 
-  if (neighboursAliveCount > 2) {
+  if (cell.alive && neighboursAliveCount > 1 && neighboursAliveCount < 4) {
+    return true;
+  }
+  if (!cell.alive && neighboursAliveCount === 3) {
     return true;
   }
   return false;
 };
 
-const updateAlive = () => {
+const updateHtml = () => {
   for (let i = 0; i < grid.length; i++) {
-    grid[i].alive = checkIsAlive(grid[i]);
+    const cell = document.getElementById(i.toString());
+    if (grid[i].alive) {
+      cell.classList.add("selected");
+    } else {
+      cell.classList.remove("selected");
+    }
   }
+};
+
+const updateAlive = () => {
+  const gridCopy = grid.slice();
+  for (let i = 0; i < grid.length; i++) {
+    grid[i] = {
+      ...grid[i],
+      alive: checkIsAlive(gridCopy, grid[i]),
+    };
+  }
+  updateHtml();
 };
 
 // eslint-disable-next-line no-unused-vars
 const startGame = () => {
-  updateAlive();
+  setInterval(() => {
+    updateAlive();
+  }, 1000);
 };
 
-const selectCell = (cell) => {
-  const myCell = cell.path[0];
+const selectCellByClick = (cellHtml) => {
+  const myCell = cellHtml.currentTarget;
   const idCell = Number(myCell.id);
   myCell.classList.add("selected");
   grid[idCell].alive = true;
@@ -86,17 +99,23 @@ const selectCell = (cell) => {
 
 function renderGrid() {
   const mainContainer = document.getElementById("grid-container");
+  let index = 0;
   for (let i = 0; i < rows; i++) {
     const newRow = document.createElement("div");
     newRow.classList.add("row");
     for (let j = 0; j < columns; j++) {
       const newColumn = document.createElement("div");
       newColumn.classList.add("cell");
-      newColumn.onclick = selectCell;
+      newColumn.id = `${index}`;
+      newColumn.onclick = selectCellByClick;
       newRow.appendChild(newColumn);
+      index++;
     }
     mainContainer.appendChild(newRow);
   }
 }
+
+generateGrid();
+checkingNeighbours();
 
 renderGrid();
