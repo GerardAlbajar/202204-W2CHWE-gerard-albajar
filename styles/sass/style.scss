@@ -5,3 +5,18 @@
 body {
   background-color: grey;
 }
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .row {
+    display: flex;
+    .cell {
+      width: 20px;
+      height: 20px;
+      background-color: lightgray;
+      border: 1px solid;
+    }
+  }
+}
