@@ -1,5 +1,5 @@
-const columns = 30;
-const rows = 30;
+const columns = 20;
+const rows = 20;
 const grid = [];
 
 const generateGrid = () => {
