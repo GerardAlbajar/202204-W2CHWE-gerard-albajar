@@ -1,12 +1,10 @@
-const column = 3;
-const row = 3;
+const columns = 30;
+const rows = 20;
 const grid = [];
-const iAmNotDead = [];
-const iamNotAlive = [];
 
-const generatePositionInformation = () => {
-  for (let y = 0; y < column; y++) {
-    for (let x = 0; x < row; x++) {
+const generateGrid = () => {
+  for (let y = 0; y < columns; y++) {
+    for (let x = 0; x < rows; x++) {
       grid.push({
         x,
         y,
@@ -17,30 +15,19 @@ const generatePositionInformation = () => {
   return grid;
 };
 
-generatePositionInformation();
-
-const checkingStatus = () => {
-  for (let i = 0; i < grid.length; i++) {
-    if (grid[i].alive === true) {
-      iAmNotDead.push(grid[i]);
-    }
-    iamNotAlive.push(grid[i]);
-  }
-};
-
-checkingStatus();
+generateGrid();
 
 const checkingNeighbours = () => {
   for (let i = 0; i < grid.length; i++) {
     grid[i].idx = i;
-    grid[i].topIdx = i + column;
-    grid[i].bottomIdx = i - column;
+    grid[i].topIdx = i + columns;
+    grid[i].bottomIdx = i - columns;
     grid[i].rightIdx = i + 1;
     grid[i].leftIdx = i - 1;
-    grid[i].topRightIdx = i + column + 1;
-    grid[i].topLeftIdx = i + column - 1;
-    grid[i].bottomRightIdx = i - column + 1;
-    grid[i].bottomLeftIdx = i - column - 1;
+    grid[i].topRightIdx = i + columns + 1;
+    grid[i].topLeftIdx = i + columns - 1;
+    grid[i].bottomRightIdx = i - columns + 1;
+    grid[i].bottomLeftIdx = i - columns - 1;
   }
 };
 
@@ -79,10 +66,21 @@ const checkIsAlive = (cell) => {
   return false;
 };
 
-const updateAlive = () => {
-  for (let i = 0; i < grid.length; i++) {
-    grid[i].alive = checkIsAlive(grid[i]);
+function renderGrid() {
+  const mainContainer = document.getElementById("grid-container");
+  let index = 0;
+  for (let i = 0; i < rows; i++) {
+    const newRow = document.createElement("div");
+    newRow.classList.add("row");
+    for (let j = 0; j < columns; j++) {
+      const newColumn = document.createElement("div");
+      newColumn.classList.add("cell");
+      newColumn.id = `${index}`;
+      newRow.appendChild(newColumn);
+      index++;
+    }
+    mainContainer.appendChild(newRow);
   }
-};
+}
 
-updateAlive();
+renderGrid();
